@@ -1,0 +1,12 @@
+>>> from market.models import Item
+>>> item1 = Item(name='Laptop', price=650, description='The most beautifoul laptop in the world', barcode='142567489122')
+>>> item2 = Item(name='Tv', price=300, description='HD cality, you will enjoy your favorite tv series', barcode='178957129122')
+>>> item3 = Item(name='Tablet', price=300, description='In black or white colors', barcode='453287846722')
+>>> db.session.add(item1)
+>>> db.session.add(item2)
+>>> db.session.add(item3)
+>>> db.session.commit()
+>>> from market.models import User
+>>> user1 = User(username='Guiller', email_adress='guiller@gmail.com', password_hash='GUILLER')
+>>> db.session.add(user1)
+>>> db.session.commit()
