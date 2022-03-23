@@ -20,6 +20,7 @@ class User(db.Model, UserMixin):
     # Mejora la forma en como despliega el presupuesto en la pantalla con valores altos
     @property
     def prettier_budget(self):
+        ''' Improves the way we can see high values on the screen '''
         if len(str(self.budget)) >= 4:
             return f'{str(self.budget)[:-3]}.{str(self.budget)[-3:]}$'
         else:
@@ -39,6 +40,11 @@ class User(db.Model, UserMixin):
     def verify_password(self, attempted_password):
         return bcrypt.check_password_hash(self.password_hash, attempted_password)
 
+    
+    def can_purchase(self, ram_obj):
+        ''' Returns True or False if the current user can buy this ram or not '''
+        return self.budget >= ram_obj.price
+
 
     def __repr__(self):
         return f'User id:{self.id} is:{self.name}'
@@ -53,7 +59,14 @@ class Item(db.Model):
     description = db.Column(db.String(length=1042))
     owner = db.Column(db.Integer(), db.ForeignKey('users.id'))
     
+
+    def buy(self, user):
+        ''' Method that allows us to buy a ram '''
+        self.owner = user.id
+        user.budget -= self.price
+        db.session.commit()
     
+
     def __repr__(self):
         return f'Item id:{self.id} nombre:{self.name}'
     

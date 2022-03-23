@@ -1,10 +1,11 @@
+from sre_constants import CATEGORY_NOT_WORD
 from market import app
 from market.models import Item, User
-from market.forms import RegisterForm, LoginForm
+from market.forms import RegisterForm, LoginForm, PurchaseForm
 from market import db
 
-from flask_login import login_user, logout_user, login_required
-from flask import redirect, render_template, url_for, flash
+from flask_login import login_user, logout_user, login_required, current_user
+from flask import redirect, render_template, url_for, flash, request
 
 
 
@@ -14,11 +15,24 @@ def index():
     return render_template('home.html')
 
 
-@app.route('/market')
+@app.route('/market', methods=['GET','POST'])
 @login_required
 def market_page():
-    items = Item.query.all()
-    return render_template('market.html', items=items)
+    purchase_form = PurchaseForm()
+    if request.method == 'POST':
+        purchased_item = request.form.get('purchased_item')
+        purchased_object = Item.query.filter_by(name=purchased_item).first()
+        if purchased_object:
+            if current_user.can_purchase(purchased_object):
+                purchased_object.buy(current_user)
+                flash(f'Congratulations! You have purchase a Ram named { purchased_object.name } for { purchased_object.price }$', category='success')
+            else:
+                flash(f'Unfortunately you do not have enough money to purchase this ram', category='danger')
+        return redirect(url_for('market_page'))
+
+    if request.method == 'GET':
+        items = Item.query.filter_by(owner=None)
+        return render_template('market.html', items=items, purchase_form=purchase_form)
 
 
 @app.route('/register', methods=['GET','POST'])
