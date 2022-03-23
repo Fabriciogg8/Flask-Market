@@ -1,7 +1,7 @@
 from sre_constants import CATEGORY_NOT_WORD
 from market import app
 from market.models import Item, User
-from market.forms import RegisterForm, LoginForm, PurchaseForm
+from market.forms import RegisterForm, LoginForm, PurchaseForm, SellForm
 from market import db
 
 from flask_login import login_user, logout_user, login_required, current_user
@@ -19,7 +19,9 @@ def index():
 @login_required
 def market_page():
     purchase_form = PurchaseForm()
+    sell_form = SellForm()
     if request.method == 'POST':
+        # Purchase rams logic
         purchased_item = request.form.get('purchased_item')
         purchased_object = Item.query.filter_by(name=purchased_item).first()
         if purchased_object:
@@ -28,11 +30,24 @@ def market_page():
                 flash(f'Congratulations! You have purchase a Ram named { purchased_object.name } for { purchased_object.price }$', category='success')
             else:
                 flash(f'Unfortunately you do not have enough money to purchase this ram', category='danger')
+       
+        # Sell rams logic
+        sold_item = request.form.get('sold_item')
+        sold_object = Item.query.filter_by(name=sold_item).first()
+        if sold_object:
+            if current_user.can_sell(sold_object):
+                sold_object.sell(current_user)
+                flash(f'You are selling a Ram named { sold_object.name } for { sold_object.price }$', category='success')
+            else:
+                flash(f'Unfortunately you do not own this ram', category='danger')
+       
         return redirect(url_for('market_page'))
-
+    
     if request.method == 'GET':
         items = Item.query.filter_by(owner=None)
-        return render_template('market.html', items=items, purchase_form=purchase_form)
+        owned_items = Item.query.filter_by(owner=current_user.id)
+        return render_template('market.html', items=items, purchase_form=purchase_form, 
+                                owned_items=owned_items, sell_form=sell_form)
 
 
 @app.route('/register', methods=['GET','POST'])

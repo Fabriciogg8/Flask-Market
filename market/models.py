@@ -44,7 +44,11 @@ class User(db.Model, UserMixin):
     def can_purchase(self, ram_obj):
         ''' Returns True or False if the current user can buy this ram or not '''
         return self.budget >= ram_obj.price
+    
 
+    def can_sell(self, ram_obj):
+        ''' Returns True or False if the current user can sell this ram or not '''
+        return ram_obj in self.items
 
     def __repr__(self):
         return f'User id:{self.id} is:{self.name}'
@@ -66,6 +70,13 @@ class Item(db.Model):
         user.budget -= self.price
         db.session.commit()
     
+
+    def sell(self, user):
+        ''' Method that allows us to sell a ram '''
+        self.owner = None
+        user.budget += self.price
+        db.session.commit()
+
 
     def __repr__(self):
         return f'Item id:{self.id} nombre:{self.name}'
