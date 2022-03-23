@@ -7,8 +7,8 @@
 {% block content %}
 <body class="text-center">    
     <div class="container">
-        <img class="mb-4" src="https://images.unsplash.com/photo-1561049958-dfec7585efeb?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80" alt="ram_unsplash">
-        <h1 class="h3 mb-3 font-weight-normal">
+        <img class="mb-2" src="https://images.unsplash.com/photo-1542505424716-58b2902677e6?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80" alt="ram_unsplash">
+        <h1 class="h3 mb-1 font-weight-normal">
             Please Create your Account
         </h1>
         <form method="POST" class="form-register" style="color:white">
@@ -21,7 +21,10 @@
             {{ form.password(class="form-control", placeholder="PASSWORD")}} 
             {{ form.confirm_password.label }}
             {{ form.confirm_password(class="form-control", placeholder="PASSWORD")}} 
-            <br> 
+            <div class="checkbox mb-1">
+                <h6>Already have an account?</h6>
+                <a class="btn btn-sm btn-secondary" href="{{ url_for('register_page') }}">Login</a>
+            </div>
             {{ form.submit(class="btn btn-lg btn-block btn-primary") }}
         </form>
     </div>

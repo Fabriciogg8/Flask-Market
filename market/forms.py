@@ -8,7 +8,7 @@ from wtforms.validators import Length, EqualTo, Email, DataRequired
 
 class RegisterForm(FlaskForm):
     username = StringField(label='User name: ',validators=[Length(min=2, max=30), DataRequired()])
-    email_adress = StringField(label='Email adress: ', validators=[Email(), DataRequired()])
+    email_adress = StringField(label='Email address: ', validators=[Email(), DataRequired()])
     password = PasswordField(label='Password: ', validators=[Length(min=6), DataRequired()])
     confirm_password = PasswordField(label='Confirm password: ', validators=[EqualTo('password'), DataRequired()])
     submit = SubmitField(label='Create Account')
@@ -24,3 +24,9 @@ class RegisterForm(FlaskForm):
         email = User.query.filter_by(email_adress=field.data).first()
         if email:
             raise ValidationError('Email already in use')
+
+
+class LoginForm(FlaskForm):
+    email = StringField(label='Email address: ', validators=[DataRequired()])
+    password = PasswordField(label='Password: ', validators=[DataRequired()])
+    submit = SubmitField(label='Sign in')

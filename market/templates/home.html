@@ -1,9 +1,19 @@
-<!doctype html>
+<!DOCTYPE html>
 {% extends 'base.html' %} 
 {% block title %}
-    Home Page
+    Fabricio Rams Market
 {% endblock title %} 
 
 {% block content %}
-    This is our content for the Home Page
+    <div class="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center bg-dark" style="color:white">
+        <div class="col-md-5 p-lg-3 mx-auto my-1">
+            <img class="mb-2" src="https://images.unsplash.com/photo-1542505424716-58b2902677e6?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80" alt="ram_unsplash">
+            <img class="mb-2" src="https://images.unsplash.com/photo-1561049958-dfec7585efeb?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80" alt="ram_unsplash"> 
+            <h1 class="display-4 font-weight-normal">Fabricio Rams Market</h1>
+            <p class="lead font-weight-normal">Start purchasing RAMS by clicking the link below</p>
+            <a class="btn btn-primary" href="{{ url_for('market_page') }}">Get Started</a>
+        </div>
+        <div class="product-device box-shadow d-none d-md-block"></div>
+        <div class="product-device product-device-2 box-shadow d-none d-md-block"></div>
+    </div>
 {% endblock content %}

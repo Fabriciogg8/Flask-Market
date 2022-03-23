@@ -7,6 +7,6 @@
 >>> db.session.add(item3)
 >>> db.session.commit()
 >>> from market.models import User
->>> user1 = User(username='Guiller', email_adress='guiller@gmail.com', password_hash='GUILLER')
+>>> user1 = User(username='Guiller', email_adress='guiller@gmail.com')
 >>> db.session.add(user1)
 >>> db.session.commit()
